@@ -1,23 +1,58 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { configStore} from "@reduxjs/toolkit";
+import {createRoot} from "react-dom/client";
+import { configureStore} from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import './index.css'
 import App from './App.tsx'
-// import reportWebVitals from './reportWebVitals';
-import {fetchEssentialAssets, fetchAllAssets} from "./helpers"
+import reportWebVitals from './reportWebVitals';
+import {fetchEssentialAssets, fetchAllAssets} from "./helper.ts"
+import rootReducer from './redux';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-import rootReducer from './store/rootReducer'
 
-const store = createStore(rootReducer);
+const store = configureStore({ reducer: rootReducer });
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+const showContent = (noFetch?: boolean) => {
+  const hideLoader = () => {
+    const loader = document.getElementById('loader')
+    const body = document.querySelector('body')
+    loader!.style.opacity = '0';
+    setTimeout(() => {
+      body!.style.overflowY = "auto";
+      loader!.style.display = "none"
+    }, 300)
+  }
+  if (!noFetch) {
+    fetchEssentialAssets()
+       
+    .then(() => {
+      hideLoader();
+      fetchAllAssets();
+    })
+    .catch(hideLoader);
+  }
+ 
+    if (noFetch) {
+      hideLoader();
+    } 
+}
+
+const root = createRoot(document.getElementById('root')!);
+
+
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </React.StrictMode>
 )
 
+serviceWorkerRegistration.register({
+  onSuccess: () => showContent(),
+  onUpdate: () => showContent(),
+  onNoSw: () => showContent()
+})
 
 
-
-// reportWebVitals();
+reportWebVitals();

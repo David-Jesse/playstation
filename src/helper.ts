@@ -1,19 +1,28 @@
 import {assets, essentialAssets} from "./constants";
 
+
+// Defining specifiv type for class Arguments
+type ClassValue =  string | boolean | null | undefined;
+type ClassArray = Array<ClassArray | ClassArray>;
+type ClassArg = ClassValue | ClassArray;
 // This function allows one to compare several classNames together
 // For conditional classes, just pass in the condition (boolean)
 // as the first element in the array and pass the classes you want to merge
 // as the other items in the array
 // @param {Array.<String | [Boolean, ...String]>} args
 
-export const mergeClasses = (...args: any) => {
-    return args.reduce((accumulator: any, currentValue: any) => {
+export const mergeClasses = (...args: ClassArg[]): string => {
+    return args.reduce((accumulator: string, currentValue: ClassArg) => {
         if (Array.isArray(currentValue)) {
-            const bool = currentValue.shift();
-            if (bool) return `${accumulator} ${mergeClasses(...currentValue)}`;
+            const [bool, ...rest] = currentValue;
+            if (bool) {
+                return `${accumulator} ${mergeClasses(...rest)}`;
+            } 
             return accumulator;
         } 
-        if (!currentValue) return accumulator;
+        if (!currentValue) {
+            return accumulator;
+        } 
         return `${accumulator ? `${accumulator}` : ""} ${currentValue}`
     }, "");
 };
@@ -35,16 +44,15 @@ export const secondsToHms = (d: number) => {
     return hDisplay + mDisplay + sDisplay;
 };
 
-export const fetcgEssentialAssests = () => {
-    Promise.all(essentialAssets.map((url) => fetch(url)));
+export const fetchEssentialAssets = () => {
+    return Promise.all(essentialAssets.map((url) => fetch(url)));
 }
 
 export const fetchAllAssets = () => {
     Promise.all(Object.values(assets).map((url) => fetch(url)));
 }
 
-export const pageLoading = () => {
+export const pageLoading = () => 
     !(
         window.getComputedStyle(document.getElementById("loader")!).display === "none"
     ); 
-}
