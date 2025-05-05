@@ -22,6 +22,12 @@ export interface SetSelectedIndex extends Action {
     }
 }
 
+export interface SetFilter extends Action {
+    payload: {
+        filter: GameCategories | GameGenres;
+    }
+}
+
 export interface GameData {
     name: string;
     coverArtUrl: string;

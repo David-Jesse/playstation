@@ -52,7 +52,11 @@ export const fetchAllAssets = () => {
     Promise.all(Object.values(assets).map((url) => fetch(url)));
 }
 
-export const pageLoading = () => 
-    !(
-        window.getComputedStyle(document.getElementById("loader")!).display === "none"
-    ); 
+export const pageLoading = (): boolean => {
+    const loaderElement = document.getElementById("loader");
+    // return false if the page is loaded
+    if (!loaderElement) {
+        return false;
+    }
+    return window.getComputedStyle(loaderElement).display !== "none";
+}
