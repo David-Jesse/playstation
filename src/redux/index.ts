@@ -1,7 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import AppReducer from "./App/index";
 
-// Assert that AppReducer is a vakid reducer for the app
+// Assert that AppReducer is a valid reducer for the app
 const rootReducer = combineReducers({
     app: AppReducer,
 })

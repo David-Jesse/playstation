@@ -1,22 +1,20 @@
-import { ActionCreator } from "@reduxjs/toolkit";
-import { SetSelectedIndex, SetFilter, GameCategories, GameGenres } from "./types";
+import { createAction } from "@reduxjs/toolkit";
+import { GameCategories, GameGenres } from "./types";
 import * as actionTypes from './actionTypes';
 
-export const setSelectedIndex: ActionCreator<SetSelectedIndex> = (
-    index: number 
-) => ({
+export interface SetFilter {
+    type: typeof actionTypes.APP_SET_FILTER;
     payload: {
-        index,
-    },
-    type: actionTypes.APP_SET_SELECTED_INDEX
-})
+        filter: GameCategories | GameGenres;
+    }
+}
+
+export const setSelectedIndex = createAction<{index: number}>(
+    actionTypes.APP_SET_SELECTED_INDEX
+)
 
 
-export const setFilter: ActionCreator<SetFilter> = (
-    filter: GameCategories | GameGenres
-) => ({
-    payload: {
-        filter,
-    },
-    type: actionTypes.APP_SET_FILTER
-})
+export const setFilter = createAction<{filter: GameCategories | GameGenres}>(
+    actionTypes.APP_SET_FILTER
+)
+

@@ -8,31 +8,31 @@ export const assets = {
     // Collection assets
     collectionAudio: "/audio/navigation.mp3",
     // COD
-    codbo: "images/codbo.png",
+    codbo: "images/codbo.jpg",
     target: "images/target.png",
     codboWp: "images/codbo-wp.png",
     codAudio: "/audio/cod.mp3",
 
     // Ghost
-    ghost: "images/ghost.png",
+    ghost: "images/ghost.jpg",
     buddah: "images/buddah.png",
     ghostWp: "images/ghost-wp.jpg",
     ghostAudio: "/audio/ghost.mp3",
 
     // GOW
-    gow: "images/gow.png",
+    gow: "images/gow.jpg",
     skull: "images/skull.png",
     gowWp: "images/gow-wp.jpg",
     gowAudio: "/audio/gow.mp3",
 
     // Witcher
-    witcher: "images/witcher.png",
+    witcher: "images/witcher.jpg",
     wolf: "images/wolf.png",
     witcherWp: "images/witcher-wp.jpg",
     witcherAudio: "/audio/witcher.mp3",
 
     // NARUTO
-    naruto: "images/naruto.png",
+    naruto: "images/naruto.jpg",
     anbu: "images/anbu.png",
     narutoWp: "images/naruto-wp.jpg",
     narutoAudio: "/audio/naruto.mp3",

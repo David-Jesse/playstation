@@ -1,5 +1,7 @@
 import Background from './component/Background';
 import Navigation from './component/Navigation';
+import Menu from './component/Menu';
+import Collection from './component/Collection';
 import './App.css'
 
 function App() {
@@ -9,6 +11,8 @@ function App() {
      <Background />
      <main>
         <Navigation />
+        <Menu />
+        <Collection />
      </main>
     </>
   )

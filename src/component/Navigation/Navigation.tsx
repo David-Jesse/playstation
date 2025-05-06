@@ -45,6 +45,3 @@ export const Navigation: React.FC = () => {
         </div>
     )
 }
-   
-
-//export default Navigation; 

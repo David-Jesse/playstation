@@ -12,6 +12,8 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration.ts';
 
 const store = configureStore({ reducer: rootReducer });
 
+export type AppDispatch = typeof store.dispatch
+
 const showContent = (noFetch?: boolean) => {
   const hideLoader = () => {
     const loader = document.getElementById('loader')
