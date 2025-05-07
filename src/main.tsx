@@ -8,9 +8,12 @@ import reportWebVitals from './reportWebVitals.ts';
 import {fetchEssentialAssets, fetchAllAssets} from "./helper.ts"
 import rootReducer from './redux/index.ts';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration.ts';
+//import { AppInterface } from "./redux/App/types.ts";
 
 
 const store = configureStore({ reducer: rootReducer });
+//const appState: AppInterface = store.getState().app
+
 
 export type AppDispatch = typeof store.dispatch
 

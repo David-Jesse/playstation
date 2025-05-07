@@ -16,51 +16,37 @@ const getBackgroundBlend = (theme: Theme) => {
     }
 }
 
-const BackgroundContainer: React.FC = () => {
-    const background = useRef<HTMLDivElement>(null);
-    const audioRef = useRef<HTMLAudioElement>(null);
 
-    const {selectedIndex, games} = useSelector(
+const BackgroundContainer: React.FC = () => {
+    const background = useRef<HTMLDivElement | null>(null);
+    const {selectedIndex, games} = useSelector (
         (state: ApplicationStore) => state.app
-    );
+    )
 
     const style: React.CSSProperties = {
         backgroundImage: `url(${games[selectedIndex].wallpaperUrl})`,
-        ...getBackgroundBlend(games[selectedIndex].theme),
+        ...getBackgroundBlend(games[selectedIndex].theme)
     }
 
     useEffect(() => {
-        if (background.current?.classList.contains('zoom')) {
-            background.current.classList.remove('zoom');
+        if (background.current?.classList.contains("zoom")) {
+            background.current?.classList.remove("zoom");
         }
-        const zoomTimeOut = setTimeout(() => {
-            background.current?.classList.add('zoom');
+        setTimeout(() => {
+            background.current?.classList.add("zoom");
         }, 100);
-
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current = null;
-        }
-
-        // let gameAudio: HTMLAudioElement;
-        if (!pageLoading() && games[selectedIndex].audioUrl) {
-          try {
-            audioRef.current = new Audio(games[selectedIndex].audioUrl);
-            audioRef.current.play().catch(err => {
-                console.warn("Audio playback failed:", err)
-            })
-          } catch(err) {
-            console.error("Error playing audio:", err)
-          }
+        let gameAudio: HTMLAudioElement;
+        if(!pageLoading()) {
+            gameAudio = new Audio(games[selectedIndex].audioUrl);
+            gameAudio.play();
         }
         return () => {
-          clearTimeout(zoomTimeOut);
-          if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current = null;
-          }
+            if (gameAudio) {
+                gameAudio.pause();
+            }
         }
-    }, [games, selectedIndex])
+    }, [games, selectedIndex]);
+
     return <Background style={style} background={background} />
 }
 

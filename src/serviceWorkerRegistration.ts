@@ -8,152 +8,147 @@
 // resources are updated in the background.
 
 type Config = {
-    onSuccess?: (registration: ServiceWorkerRegistration) => void;
-    onUpdate?: (registration: ServiceWorkerRegistration) => void;
-    onNoSw?: () => void;
-  };
+  onSuccess?: (registration: ServiceWorkerRegistration) => void;
+  onUpdate?: (registration: ServiceWorkerRegistration) => void;
+  onNoSw?: () => void;
+};
 
-  const getBaseUrl = () => {
-    try {
-        return import.meta.env.BASE_URL || '/';
-    } catch (e) {
-        console.error(e)
-        return '/';
-    }
+const getBaseUrl = () => {
+  try {
+    return import.meta.env.BASE_URL || '/';
+  } catch (e) {
+    console.error(e);
+    return '/';
   }
+};
 
-  const BASE_URL = getBaseUrl();
-  
-  export function register(config?: Config) {
+const BASE_URL = getBaseUrl();
+
+export function register(config?: Config) {
 // sourcery skip: merge-else-if
-    if ("serviceWorker" in navigator) {
-      // The URL constructor is available in all browsers that support SW.
-      const publicUrl = new URL(BASE_URL, window.location.href);
-      if (publicUrl.origin !== window.location.origin) {
-        // Our service worker won't work if PUBLIC_URL is on a different origin
-        // from what our page is served on. This might happen if a CDN is used to
-        // serve assets; see https://github.com/facebook/create-react-app/issues/2374
-        return;
-      }
-  
-      window.addEventListener("load", () => {
-        const swUrl = `${import.meta.env.BASE_URL}/service-worker.js`;
-  
-        // if (isLocalhost) {
-        // This is running on localhost. Let's check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl, config);
-  
-        // Add some additional logging to localhost, pointing developers to the
-        // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            "This web app is being served cache-first by a service " +
-              "worker. To learn more, visit https://cra.link/PWA"
-          );
-          if (config && config.onNoSw) {
-            config.onNoSw();
-          }
-        });
-        // } else {
-        // Is not localhost. Just register service worker
-        registerValidSW(swUrl, config);
-        // }
+  if ("serviceWorker" in navigator) {
+    // The URL constructor is available in all browsers that support SW.
+    const publicUrl = new URL(window.location.origin + BASE_URL);
+    if (publicUrl.origin !== window.location.origin) {
+      // Our service worker won't work if PUBLIC_URL is on a different origin
+      // from what our page is served on. This might happen if a CDN is used to
+      // serve assets; see https://github.com/facebook/create-react-app/issues/2374
+      return;
+    }
+
+    window.addEventListener("load", () => {
+      // Create the service worker URL properly by joining the base path with the service worker file
+      const swUrl = `${window.location.origin}${BASE_URL === '/' ? '' : BASE_URL}/service-worker.js`;
+
+      // Check if a service worker still exists or not.
+      checkValidServiceWorker(swUrl, config);
+
+      // Add some additional logging to localhost, pointing developers to the
+      // service worker/PWA documentation.
+      navigator.serviceWorker.ready.then(() => {
+        console.log(
+          "This web app is being served cache-first by a service " +
+            "worker. To learn more, visit https://cra.link/PWA"
+        );
+        if (config && config.onNoSw) {
+          config.onNoSw();
+        }
       });
-    } else {
-      if (config && config.onNoSw) {
-        config.onNoSw();
-      }
+    });
+  } else {
+    if (config && config.onNoSw) {
+      config.onNoSw();
     }
   }
-  
-  function registerValidSW(swUrl: string, config?: Config) {
-    navigator.serviceWorker
-      .register(swUrl)
-      .then((registration) => {
-        registration.onupdatefound = () => {
-          const installingWorker = registration.installing;
-          if (installingWorker == null) {
-            return;
-          }
-  
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === "installed") {
-              if (navigator.serviceWorker.controller) {
-                // At this point, the updated precached content has been fetched,
-                // but the previous service worker will still serve the older
-                // content until all client tabs are closed.
-                console.log(
-                  "New content is available and will be used when all " +
-                    "tabs for this page are closed. See https://cra.link/PWA."
-                );
-  
-                // Execute callback
-                if (config && config.onUpdate) {
-                  config.onUpdate(registration);
-                }
-              } else {
-                // At this point, everything has been precached.
-                // It's the perfect time to display a
-                // "Content is cached for offline use." message.
-                console.log("Content is cached for offline use.");
-  
-                // Execute callback
-                if (config && config.onSuccess) {
-                  config.onSuccess(registration);
-                }
+}
+
+function registerValidSW(swUrl: string, config?: Config) {
+  navigator.serviceWorker
+    .register(swUrl)
+    .then((registration) => {
+      registration.onupdatefound = () => {
+        const installingWorker = registration.installing;
+        if (installingWorker == null) {
+          return;
+        }
+
+        installingWorker.onstatechange = () => {
+          if (installingWorker.state === "installed") {
+            if (navigator.serviceWorker.controller) {
+              // At this point, the updated precached content has been fetched,
+              // but the previous service worker will still serve the older
+              // content until all client tabs are closed.
+              console.log(
+                "New content is available and will be used when all " +
+                  "tabs for this page are closed. See https://cra.link/PWA."
+              );
+
+              // Execute callback
+              if (config && config.onUpdate) {
+                config.onUpdate(registration);
+              }
+            } else {
+              // At this point, everything has been precached.
+              // It's the perfect time to display a
+              // "Content is cached for offline use." message.
+              console.log("Content is cached for offline use.");
+
+              // Execute callback
+              if (config && config.onSuccess) {
+                config.onSuccess(registration);
               }
             }
-          };
+          }
         };
-      })
-      .catch((error) => {
-        console.error("Error during service worker registration:", error);
+      };
+    })
+    .catch((error) => {
+      console.error("Error during service worker registration:", error);
+// sourcery skip: use-braces
+      if (config && config.onNoSw) config.onNoSw();
+    });
+}
+
+function checkValidServiceWorker(swUrl: string, config?: Config) {
+  // Check if the service worker can be found. If it can't reload the page.
+  fetch(swUrl, {
+    headers: { "Service-Worker": "script" },
+  })
+    .then((response) => {
+      // Ensure service worker exists, and that we really are getting a JS file.
+      const contentType = response.headers.get("content-type");
+      if (
+        response.status === 404 ||
+        (contentType != null && contentType.indexOf("javascript") === -1)
+      ) {
+        // No service worker found. Probably a different app. Reload the page.
 // sourcery skip: use-braces
         if (config && config.onNoSw) config.onNoSw();
-      });
-  }
-  
-  function checkValidServiceWorker(swUrl: string, config?: Config) {
-    // Check if the service worker can be found. If it can't reload the page.
-    fetch(swUrl, {
-      headers: { "Service-Worker": "script" },
-    })
-      .then((response) => {
-        // Ensure service worker exists, and that we really are getting a JS file.
-        const contentType = response.headers.get("content-type");
-        if (
-          response.status === 404 ||
-          (contentType != null && contentType.indexOf("javascript") === -1)
-        ) {
-          // No service worker found. Probably a different app. Reload the page.
-// sourcery skip: use-braces
-          if (config && config.onNoSw) config.onNoSw();
-          navigator.serviceWorker.ready.then((registration) => {
-            registration.unregister().then(() => {
-              window.location.reload();
-            });
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.unregister().then(() => {
+            window.location.reload();
           });
-        } else {
-          // Service worker found. Proceed as normal.
-          registerValidSW(swUrl, config);
-        }
+        });
+      } else {
+        // Service worker found. Proceed as normal.
+        registerValidSW(swUrl, config);
+      }
+    })
+    .catch(() => {
+      console.log(
+        "No internet connection found. App is running in offline mode."
+      );
+    });
+}
+
+export function unregister() {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.ready
+      .then((registration) => {
+        registration.unregister();
       })
-      .catch(() => {
-        console.log(
-          "No internet connection found. App is running in offline mode."
-        );
+      .catch((error) => {
+        console.error(error.message);
       });
   }
-  
-  export function unregister() {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.ready
-        .then((registration) => {
-          registration.unregister();
-        })
-        .catch((error) => {
-          console.error(error.message);
-        });
-    }
-  }
-  
+}

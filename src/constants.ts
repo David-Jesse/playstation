@@ -10,7 +10,7 @@ export const assets = {
     // COD
     codbo: "images/codbo.jpg",
     target: "images/target.png",
-    codboWp: "images/codbo-wp.png",
+    codboWp: "images/codbo-wp.jpg",
     codAudio: "/audio/cod.mp3",
 
     // Ghost
