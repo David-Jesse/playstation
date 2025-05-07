@@ -3,6 +3,7 @@ import Navigation from './component/Navigation';
 import Menu from './component/Menu';
 import Collection from './component/Collection';
 import Details from './component/Details';
+import Footer from './component/Footer';
 import './App.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Menu />
         <Collection />
         <Details />
+        <Footer />
      </main>
     </>
   )
