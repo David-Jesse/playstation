@@ -53,6 +53,10 @@ const CarouselContainer: React.FC<CarouselProps> = ({
     );
     
     useEffect(() => {
+        if(containerRef.current) {
+            containerRef.current.style.width = 'translateX(0)';
+        }
+
         if (!carouselInstance.carouselData) {
             carouselInstance.setCarouselData({
                 scrollRight,

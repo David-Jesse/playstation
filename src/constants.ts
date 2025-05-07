@@ -43,6 +43,12 @@ export const assets = {
     horizonWp: "images/horizon-wp.jpg",
     horizonAudio: "audio/horizon.mp3",
 
+    // Assasain Creed
+    assasain: "images/assasains-creed.jpg",
+    cross: "images/cross.png",
+    assasainWp: "images/assasain-wp.jpg",
+    assasainAudio: "/audio/gow.mp3",
+
 }
 
 export const essentialAssets = [

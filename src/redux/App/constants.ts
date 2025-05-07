@@ -73,5 +73,17 @@ export const games: GameData[] = [
         wallpaperUrl: assets.narutoWp,
         theme: Theme.DARK,
         audioUrl: assets.narutoAudio
+    },
+    {
+        name: "Assasain's Creed III",
+        coverArtUrl: assets.assasainWp,
+        playtime: 64000,
+        progression: 44,
+        genre: [GameGenres.action, GameGenres.adventure],
+        title: "Slayer",
+        titleUrl: assets.skull,
+        wallpaperUrl: assets.assasainWp,
+        theme: Theme.DARK,
+        audioUrl: assets.gowAudio
     }
 ]

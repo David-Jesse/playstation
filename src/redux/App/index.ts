@@ -50,12 +50,8 @@ const AppReducer: Reducer<AppInterface, AppActionTypes> = (state = initialState,
                 }
             } else {
                 const filteredGames = games.filter(game => {
-                    console.log(`Checking ${game.title || game.name} for genre: ${action.payload.filter}`)
-
+// sourcery skip: inline-immediately-returned-variable
                     const hasGenre = game.genre.includes(action.payload.filter as unknown as GameGenres);
-
-                    console.log(`Game ${game.title || game.name} ${hasGenre ? 'matches' : "does not match"} filter ${action.payload.filter}`)
-
                     return hasGenre;
                 })
 
