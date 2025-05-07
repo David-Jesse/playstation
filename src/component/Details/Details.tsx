@@ -24,9 +24,9 @@ const Details: React.FC<{
                 </div>
                 <div className={styles.statBox}>
                     <div>Last Earned Title</div>
-                </div>
-                <div>
-                    {title} <img src={titleUrl} alt={title} />
+                    <div>
+                        {title} <img src={titleUrl} alt={title}/>
+                    </div>
                 </div>
             </div>
         </div>
